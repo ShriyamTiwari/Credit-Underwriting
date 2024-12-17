@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Prediction Form</title>
+    <style>
+        /* Overall Body Styling */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f9;
+            margin: 0;
+            padding: 0;
+        }
+
+        h1 {
+            text-align: center;
+            padding: 20px;
+            background-color: #4CAF50;
+            color: white;
+            margin: 0;
+            border-bottom: 3px solid #388E3C;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 40px;
+            background-color: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ddd;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        label {
+            font-size: 1.1em;
+            color: #333;
+        }
+
+        input, select, button {
+            padding: 12px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            box-sizing: border-box;
+            background-color: #f9f9f9;
+            transition: all 0.3s ease;
+        }
+
+        input[type="number"], select {
+            width: 100%;
+        }
+
+        input:focus, select:focus {
+            outline: none;
+            border-color: #4CAF50;
+            box-shadow: 0 0 8px rgba(76, 175, 80, 0.5);
+        }
+
+        button {
+            background-color: #4CAF50;
+            color: white;
+            cursor: pointer;
+            font-size: 1.2em;
+            border-radius: 8px;
+            border: none;
+            padding: 15px;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #45a049;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form-group label {
+            margin-bottom: 8px;
+        }
+
+        /* Adjustments for better alignment and spacing */
+        .container form input, .container form select {
+            padding: 12px 18px;
+        }
+
+        .form-group input, .form-group select {
+            padding: 12px;
+        }
+
+        /* Scrollbar styles */
+        ::-webkit-scrollbar {
+            width: 12px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #888;
+            border-radius: 10px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #555;
+        }
+
+        /* Result Section Styling */
+        .result {
+            margin-top: 40px;
+            padding: 20px;
+            background-color: #e8f5e9;
+            border: 1px solid #4CAF50;
+            border-radius: 8px;
+            text-align: center;
+        }
+
+        .error {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Loan Prediction Form</h1>
+
+    <div class="container">
+        <form id="loanForm" action="/predict" method="POST">
+            <!-- Age -->
+            <div class="form-group">
+                <label for="person_age">Age:</label>
+                <input type="number" id="person_age" name="person_age" min="18" max="100" required>
+            </div>
+
+            <!-- Income -->
+            <div class="form-group">
+                <label for="person_income">Income (in USD):</label>
+                <input type="number" id="person_income" name="person_income" min="4000" max="500000" step="100" required>
+            </div>
+
+            <!-- Home Ownership -->
+            <div class="form-group">
+                <label for="person_home_ownership">Home Ownership:</label>
+                <select id="person_home_ownership" name="person_home_ownership" required>
+                    <option value="OWN">OWN</option>
+                    <option value="RENT">RENT</option>
+                    <option value="MORTGAGE">MORTGAGE</option>
+                    <option value="OTHER">OTHER</option>
+                </select>
+            </div>
+
+            <!-- Employment Length -->
+            <div class="form-group">
+                <label for="person_emp_length">Employment Length (in years):</label>
+                <input type="number" id="person_emp_length" name="person_emp_length" min="0" max="70" required>
+            </div>
+
+            <!-- Loan Intent -->
+            <div class="form-group">
+                <label for="loan_intent">Loan Intent:</label>
+                <select id="loan_intent" name="loan_intent" required>
+                    <option value="PERSONAL">PERSONAL</option>
+                    <option value="HOMEIMPROVEMENT">HOMEIMPROVEMENT</option>
+                    <option value="DEBTCONSOLIDATION">DEBTCONSOLIDATION</option>
+                    <option value="MEDICAL">MEDICAL</option>
+                    <option value="VENTURE">VENTURE</option>
+                    <option value="EDUCATION">EDUCATION</option>
+                </select>
+            </div>
+
+            <!-- Loan Grade -->
+            <div class="form-group">
+                <label for="loan_grade">Loan Grade:</label>
+                <select id="loan_grade" name="loan_grade" required>
+                    <option value="A">A</option>
+                    <option value="B">B</option>
+                    <option value="C">C</option>
+                    <option value="D">D</option>
+                    <option value="E">E</option>
+                    <option value="F">F</option>
+                    <option value="G">G</option>
+                </select>
+            </div>
+
+            <!-- Loan Amount -->
+            <div class="form-group">
+                <label for="loan_amnt">Loan Amount (in USD):</label>
+                <input type="number" id="loan_amnt" name="loan_amnt" min="500" max="35000" value="10000" step="100" required>
+            </div>
+
+            <!-- Interest Rate -->
+            <div class="form-group">
+                <label for="loan_int_rate">Interest Rate (in %):</label>
+                <input type="number" id="loan_int_rate" name="loan_int_rate" min="5" max="100" value="10.5" step="0.1" required>
+            </div>
+
+            <!-- Loan Percentage of Income -->
+            <div class="form-group">
+                <label for="loan_percent_income">Loan Percentage of Income:</label>
+                <input type="number" id="loan_percent_income" name="loan_percent_income" min="0" max="1" value="0.2" step="0.01" required>
+            </div>
+
+            <!-- Default on File -->
+            <div class="form-group">
+                <label for="cb_person_default_on_file">Default on File:</label>
+                <select id="cb_person_default_on_file" name="cb_person_default_on_file" required>
+                    <option value="Y">Y</option>
+                    <option value="N">N</option>
+                </select>
+            </div>
+
+            <!-- Credit History Length -->
+            <div class="form-group">
+                <label for="cb_person_cred_hist_length">Credit History Length (in years):</label>
+                <input type="number" id="cb_person_cred_hist_length" name="cb_person_cred_hist_length" min="0" max="50" value="10" required>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit</button>
+        </form>
+
+        <!-- Result Section -->
+        <div id="result" class="result" style="display: none;">
+            <!-- This will be populated dynamically with the result -->
+        </div>
+    </div>
+
+    <script>
+        // Form submission logic
+        document.getElementById("loanForm").onsubmit = function(event) {
+            event.preventDefault(); // Prevent page refresh
+
+            let formData = new FormData(this);
+            let data = {};
+
+            // Convert form data to JSON format
+            formData.forEach((value, key) => {
+                data[key] = value;
+            });
+
+            // Send data to the Flask backend
+            fetch('/predict', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data)
+            })
+            .then(response => response.json())
+            .then(result => {
+                // Display result
+                let resultDiv = document.getElementById("result");
+                resultDiv.style.display = "block";
+                resultDiv.innerHTML = `<strong>Prediction:</strong> ${result.prediction}<br><strong>Input Data:</strong><pre>${JSON.stringify(result.input_data, null, 2)}</pre>`;
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        };
+    </script>
+
+</body>
+</html>
